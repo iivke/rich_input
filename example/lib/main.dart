@@ -1,4 +1,7 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import 'package:flutter/services.dart';
 import 'package:rich_input/rich_input.dart';
@@ -35,7 +38,7 @@ class _MyAppState extends State<MyApp> {
             // Expanded(child: Text('haha'), flex: 5),
             TextField(),
             Container(
-              height: 44,
+              height: 60,
               child: buildRichInput(),
             )
           ],
@@ -55,14 +58,37 @@ class _MyAppState extends State<MyApp> {
 
   final _focusNode = FocusNode();
 
+  var viewType = 'com.fanbook.rich_input';
+
   Widget buildRichInput() {
-    return Focus(
-      focusNode: _focusNode,
-      child: AndroidView(
-        viewType: 'com.fanbook.rich_input',
-        creationParams: creationParams,
-        creationParamsCodec: StandardMessageCodec(),
-      ),
+    return PlatformViewLink(
+      viewType: viewType,
+      surfaceFactory: (context, controller) {
+        return AndroidViewSurface(
+          controller: controller,
+          gestureRecognizers: const <Factory<OneSequenceGestureRecognizer>>{},
+          hitTestBehavior: PlatformViewHitTestBehavior.opaque,
+        );
+      },
+      onCreatePlatformView: (params) {
+        return PlatformViewsService.initSurfaceAndroidView(
+          id: params.id,
+          viewType: viewType,
+          layoutDirection: TextDirection.ltr,
+          creationParams: creationParams,
+          creationParamsCodec: StandardMessageCodec(),
+        )
+          ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
+          ..create();
+      },
     );
+    // return Focus(
+    //   focusNode: _focusNode,
+    //   child: AndroidView(
+    //     viewType: 'com.fanbook.rich_input',
+    //     creationParams: creationParams,
+    //     creationParamsCodec: StandardMessageCodec(),
+    //   ),
+    // );
   }
 }

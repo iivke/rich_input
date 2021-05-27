@@ -64,6 +64,7 @@ public class MyEditView implements PlatformView, MethodChannel.MethodCallHandler
                 return false;
             }
         });
+
     }
 
     @Override
