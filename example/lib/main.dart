@@ -28,20 +28,33 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Column(
-          children: [
-            ElevatedButton(
-              onPressed: _setInputText,
-              child: Text('test'),
-            ),
-            // Expanded(child: myRichInput, flex: 1),
-            // Expanded(child: Text('haha'), flex: 5),
-            TextField(),
-            Container(
-              height: 60,
-              child: buildRichInput(),
-            )
-          ],
+        body: Padding(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Flutter TextField'),
+              SizedBox(height: 8),
+              Divider(height: 1, color: Colors.blue),
+              TextField(
+                decoration: InputDecoration(border: OutlineInputBorder()),
+              ),
+              SizedBox(height: 32),
+              Text('Android EditText'),
+              SizedBox(height: 8),
+              Container(height: 60, child: buildRichInput()),
+              SizedBox(height: 32),
+              Text('Actions For EditText'),
+              SizedBox(height: 8),
+              ElevatedButton(
+                  onPressed: _setInputText, child: Text('set content')),
+              ElevatedButton(
+                  onPressed: () {
+                    setState(() {});
+                  },
+                  child: Text('update ui')),
+            ],
+          ),
         ),
       ),
     );
@@ -56,7 +69,7 @@ class _MyAppState extends State<MyApp> {
     "content": "this is my first native view!!!"
   };
 
-  final _focusNode = FocusNode();
+  // final _focusNode = FocusNode();
 
   var viewType = 'com.fanbook.rich_input';
 

@@ -53,23 +53,14 @@ public class MyEditView implements PlatformView, MethodChannel.MethodCallHandler
                 Log.d(TAG, "afterTextChanged: " + s.toString());
             }
         });
-        mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                Log.d(TAG, "onEditorAction: " + actionId + "   event: " + event);
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                } else if (actionId == EditorInfo.IME_ACTION_PREVIOUS) {
-
-                }
-                return false;
-            }
-        });
-
     }
 
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        Log.d(TAG, "onMethodCall: " + call.method);
         if (call.method.equals("setText")) {
+            String content = (String)call.arguments;
+            mEditText.setText(content);
             result.success(null);
         } else {
             result.notImplemented();
